@@ -29,13 +29,9 @@ class MovieList : AppCompatActivity() {
     // MARK: - Private Methods
 
     private fun configureAdapter(movieList: List<Movie>) {
-        val adapter = MovieListAdapter(movieList)
+        val adapter = MovieListAdapter(movieList, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun searchMovies(movieName: String) {
-
     }
 
     private fun configureSearchView() {

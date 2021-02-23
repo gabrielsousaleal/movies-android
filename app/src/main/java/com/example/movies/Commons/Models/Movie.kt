@@ -6,6 +6,9 @@ data class Movie (
 @SerializedName("id")
 var id: Int,
 
+@SerializedName("poster_path")
+var posterPath: String,
+
 @SerializedName("original_title")
 var name: String
 )
