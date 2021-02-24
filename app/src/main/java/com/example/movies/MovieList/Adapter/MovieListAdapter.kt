@@ -1,18 +1,23 @@
 package com.example.movies.MovieList.Adapter
 
 import android.content.Context
-import android.util.Log
+import android.graphics.ColorFilter
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.bumptech.glide.TransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.example.movies.Commons.Models.Movie
 import com.example.movies.R
 
-class MovieListAdapter (private val movieList: List<Movie>, private val activityContext: Context) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+
+class MovieListAdapter(private val movieList: List<Movie>, private val activityContext: Context) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val nameTextView = itemView.findViewById<TextView>(R.id.movieName)
@@ -47,9 +52,19 @@ class MovieListAdapter (private val movieList: List<Movie>, private val activity
         val baseURL = "http://image.tmdb.org/t/p/w300"
         val fullURL = baseURL.plus(posterPath)
 
-        Log.i("aqui", fullURL)
+        val circularProgressDrawable = CircularProgressDrawable(activityContext)
+        circularProgressDrawable.strokeWidth = 15f
+        circularProgressDrawable.centerRadius = 50f
+        circularProgressDrawable.setColorSchemeColors(activityContext.resources.getColor(R.color.white))
+        circularProgressDrawable.start()
+
         Glide.with(imageView.context)
                 .load(fullURL)
+                .apply(
+                        RequestOptions()
+                                .placeholder(circularProgressDrawable)
+                                .fitCenter()
+                )
                 .into(imageView)
     }
 }
