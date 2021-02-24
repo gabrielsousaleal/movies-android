@@ -2,9 +2,11 @@ package com.example.movies.MovieList.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.SearchView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.Commons.Models.Movie
 import com.example.movies.MovieList.Adapter.MovieListAdapter
@@ -24,14 +26,23 @@ class MovieList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_list)
         configureSearchView()
+        setDefaultAdapter()
     }
 
     // MARK: - Private Methods
 
+    private fun setDefaultAdapter() {
+        viewModel.getMoviesByName(movieName = "naruto") { error, response, errorMessage ->
+            if (response != null) {
+                configureAdapter(movieList = response)
+            }
+        }
+    }
+
     private fun configureAdapter(movieList: List<Movie>) {
         val adapter = MovieListAdapter(movieList, this)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
     }
 
     private fun configureSearchView() {

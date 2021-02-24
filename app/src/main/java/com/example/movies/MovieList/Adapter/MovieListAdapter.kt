@@ -1,6 +1,7 @@
 package com.example.movies.MovieList.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,8 @@ class MovieListAdapter (private val movieList: List<Movie>, private val activity
         val baseURL = "http://image.tmdb.org/t/p/w300"
         val fullURL = baseURL.plus(posterPath)
 
-        Glide.with(activityContext.applicationContext)
+        Log.i("aqui", fullURL)
+        Glide.with(imageView.context)
                 .load(fullURL)
                 .into(imageView)
     }
