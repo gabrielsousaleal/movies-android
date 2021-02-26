@@ -12,6 +12,7 @@ interface RetrofitInterface {
     fun getAllMovies(
         @Query("query") movieName: String,
         @Query("language") language: String = "pt-BR",
-        @Query("api_key") api_key: String = "dcf373a212e3fd454f97f09a273a42e2"
+        @Query("api_key") api_key: String = "dcf373a212e3fd454f97f09a273a42e2",
+        @Query("page") page: Int
     ): Call<MovieList>
 }

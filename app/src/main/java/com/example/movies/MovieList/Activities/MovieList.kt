@@ -2,14 +2,13 @@ package com.example.movies.MovieList.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movies.Commons.Models.Movie
 import com.example.movies.MovieList.Adapter.MovieListAdapter
+import com.example.movies.MovieList.Adapter.MovieListScrollListener
+import com.example.movies.MovieList.Adapter.MoviesRecyclerListener
 import com.example.movies.MovieList.ViewModel.MovieListViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_movie_list.*
@@ -43,6 +42,24 @@ class MovieList : AppCompatActivity() {
         val adapter = MovieListAdapter(movieList, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(this, 2)
+
+        val scrollListener = MovieListScrollListener(context = baseContext ,gridLayoutManager = recyclerView.layoutManager as GridLayoutManager)
+        scrollListener.setRecyclerListener(object : MoviesRecyclerListener {
+            override fun pushNextPage() {
+                viewModel.loadNextPage { error, response, errorMessage ->
+                        if (errorMessage != null) {
+                        }
+                    if (response != null) {
+                        adapter.updateMovieList(response)
+                        recyclerView.post {
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+        })
+
+        recyclerView.addOnScrollListener(scrollListener)
     }
 
     private fun configureSearchView() {
