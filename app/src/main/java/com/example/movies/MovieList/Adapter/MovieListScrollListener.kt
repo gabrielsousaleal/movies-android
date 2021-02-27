@@ -9,11 +9,16 @@ class MovieListScrollListener(private val context: Context, private var gridLayo
     // MARK: - Private Properties
 
     private lateinit var recyclerListener: MoviesRecyclerListener
+    private var isLoading = false
 
     // MARK: - Life Cycle
 
     fun setRecyclerListener(recyclerListener: MoviesRecyclerListener) {
         this.recyclerListener = recyclerListener
+    }
+
+    fun stopLoading() {
+        isLoading = false
     }
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -23,7 +28,8 @@ class MovieListScrollListener(private val context: Context, private var gridLayo
         val totalItensCount = gridLayoutManager.itemCount
         val lastSeenItemPosition = gridLayoutManager.findLastVisibleItemPosition()
 
-        if (totalItensCount <= lastSeenItemPosition + gridLayoutManager.spanCount) {
+        if (!isLoading && totalItensCount <= lastSeenItemPosition + gridLayoutManager.spanCount) {
+            isLoading = true
             recyclerListener.pushNextPage()
         }
     }

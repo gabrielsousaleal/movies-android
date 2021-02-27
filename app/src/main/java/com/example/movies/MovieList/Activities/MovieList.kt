@@ -39,7 +39,7 @@ class MovieList : AppCompatActivity() {
     }
 
     private fun configureAdapter(movieList: List<Movie>) {
-        val adapter = MovieListAdapter(movieList, this)
+        val adapter = MovieListAdapter(movieList, this, recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
@@ -47,12 +47,11 @@ class MovieList : AppCompatActivity() {
         scrollListener.setRecyclerListener(object : MoviesRecyclerListener {
             override fun pushNextPage() {
                 viewModel.loadNextPage { error, response, errorMessage ->
-                        if (errorMessage != null) {
-                        }
                     if (response != null) {
                         adapter.updateMovieList(response)
                         recyclerView.post {
                             adapter.notifyDataSetChanged()
+                            scrollListener.stopLoading()
                         }
                     }
                 }
