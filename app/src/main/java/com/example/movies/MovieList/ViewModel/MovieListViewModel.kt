@@ -11,17 +11,17 @@ class MovieListViewModel(private val service: ServicesInterface = Services()) {
 
     private var currentPage = 1
     private var currentMovieName: String = ""
-    private var movieList: List<Movie> = emptyList()
+    private var movieList: ArrayList<Movie> = arrayListOf<Movie>()
 
     // MARK: - Private Methods
 
-    private fun updateMovieList(newMovieList: List<Movie>) {
-        if (currentPage == 1) movieList = newMovieList else movieList += newMovieList
+    private fun updateMovieList(newMovieList: ArrayList<Movie>) {
+        if (currentPage == 1) movieList = newMovieList else movieList.addAll(newMovieList)
     }
 
     // MARK: - Public Methods
 
-    fun getMoviesByName(movieName: String, page: Int = 1, onResult: (error: Boolean, response: List<Movie>?, errorMessage: String?) -> Unit) {
+    fun getMoviesByName(movieName: String, page: Int = 1, onResult: (error: Boolean, response: ArrayList<Movie>?, errorMessage: String?) -> Unit) {
         service.getMoviesByName(name = movieName, page = page) { error, response, errorMessage ->
 
             if (response != null) {
@@ -37,7 +37,7 @@ class MovieListViewModel(private val service: ServicesInterface = Services()) {
         }
     }
 
-    fun loadNextPage(onResult: (error: Boolean, response: List<Movie>?, errorMessage: String?) -> Unit) {
+    fun loadNextPage(onResult: (error: Boolean, response: ArrayList<Movie>?, errorMessage: String?) -> Unit) {
         currentPage += 1
 
         getMoviesByName(movieName = currentMovieName, page = currentPage) { error, response, errorMessage ->

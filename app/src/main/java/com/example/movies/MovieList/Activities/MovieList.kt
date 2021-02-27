@@ -38,7 +38,7 @@ class MovieList : AppCompatActivity() {
         }
     }
 
-    private fun configureAdapter(movieList: List<Movie>) {
+    private fun configureAdapter(movieList: ArrayList<Movie>) {
         val adapter = MovieListAdapter(movieList, this, recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(this, 2)

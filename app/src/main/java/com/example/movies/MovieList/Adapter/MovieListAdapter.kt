@@ -17,7 +17,9 @@ interface MoviesRecyclerListener {
     fun pushNextPage()
 }
 
-class MovieListAdapter(private var movieList: List<Movie>, private val activityContext: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+class MovieListAdapter(private var movieList: ArrayList<Movie>, private val activityContext: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+
+    class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val nameTextView = itemView.findViewById<TextView>(R.id.movieName)
@@ -47,6 +49,23 @@ class MovieListAdapter(private var movieList: List<Movie>, private val activityC
         return movieList.size
     }
 
+//
+//    fun addLoadingView() {
+//        //Add loading item
+//        recyclerView.post {
+//            movieList.add(null)
+//            notifyItemInserted(itemsCells.size - 1)
+//        }
+//    }
+//
+//    fun removeLoadingView() {
+//        //Remove loading item
+//        if (itemsCells.size != 0) {
+//            itemsCells.removeAt(itemsCells.size - 1)
+//            notifyItemRemoved(itemsCells.size)
+//        }
+//    }
+
     private fun setImage(imageView: ImageView, posterPath: String) {
         if (posterPath == null) return
 
@@ -71,7 +90,7 @@ class MovieListAdapter(private var movieList: List<Movie>, private val activityC
         }
     }
 
-    fun updateMovieList(movieList: List<Movie>) {
+    fun updateMovieList(movieList: ArrayList<Movie>) {
         this.movieList = movieList
     }
 }
