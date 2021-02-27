@@ -2,16 +2,21 @@ package com.example.movies.MovieList.Activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies.Commons.Models.Movie
 import com.example.movies.MovieList.Adapter.MovieListAdapter
 import com.example.movies.MovieList.Adapter.MovieListScrollListener
 import com.example.movies.MovieList.Adapter.MoviesRecyclerListener
+import com.example.movies.MovieList.Adapter.VIEW_TYPE
 import com.example.movies.MovieList.ViewModel.MovieListViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_movie_list.*
+import okhttp3.internal.wait
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 class MovieList : AppCompatActivity() {
 
@@ -41,20 +46,31 @@ class MovieList : AppCompatActivity() {
     private fun configureAdapter(movieList: ArrayList<Movie>) {
         val adapter = MovieListAdapter(movieList, this, recyclerView)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        val layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = layoutManager
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (adapter.getItemViewType(position)) {
+                    VIEW_TYPE.MOVIE -> 1
+                    VIEW_TYPE.LOADING_VIEW -> 2
+                    else -> -1
+                }
+            }
+        }
 
         val scrollListener = MovieListScrollListener(context = baseContext ,gridLayoutManager = recyclerView.layoutManager as GridLayoutManager)
         scrollListener.setRecyclerListener(object : MoviesRecyclerListener {
             override fun pushNextPage() {
-                viewModel.loadNextPage { error, response, errorMessage ->
-                    if (response != null) {
-                        adapter.updateMovieList(response)
-                        recyclerView.post {
-                            adapter.notifyDataSetChanged()
+                adapter.addLoadingView()
+                Handler().postDelayed( {
+                    viewModel.loadNextPage { error, response, errorMessage ->
+                        adapter.removeLoadingView()
+                        if (response != null) {
+                            adapter.updateMovieList(response)
                             scrollListener.stopLoading()
                         }
                     }
-                }
+                }, 2000)
             }
         })
 

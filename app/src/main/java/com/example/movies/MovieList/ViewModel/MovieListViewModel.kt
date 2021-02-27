@@ -23,7 +23,6 @@ class MovieListViewModel(private val service: ServicesInterface = Services()) {
 
     fun getMoviesByName(movieName: String, page: Int = 1, onResult: (error: Boolean, response: ArrayList<Movie>?, errorMessage: String?) -> Unit) {
         service.getMoviesByName(name = movieName, page = page) { error, response, errorMessage ->
-
             if (response != null) {
                 currentPage = page
                 currentMovieName = movieName

@@ -1,12 +1,14 @@
 package com.example.movies.MovieList.Adapter
 
 import android.content.Context
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -17,11 +19,11 @@ interface MoviesRecyclerListener {
     fun pushNextPage()
 }
 
-class MovieListAdapter(private var movieList: ArrayList<Movie>, private val activityContext: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+class MovieListAdapter(private var movieList: ArrayList<Movie>, private val activityContext: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
+    inner class MovieViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val nameTextView = itemView.findViewById<TextView>(R.id.movieName)
         val imageView = itemView.findViewById<ImageView>(R.id.movieImageView)
     }
@@ -31,40 +33,76 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
         return movie.id as Long
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListAdapter.ViewHolder {
-        val context = parent.context
-        val inflater = LayoutInflater.from(context)
-        val contactView = inflater.inflate(R.layout.movie_recycler_item, parent, false)
-        return ViewHolder(contactView)
+    override fun getItemViewType(position: Int): Int {
+        val movie = movieList.get(position)
+        return if (movie.id == -1) {
+            VIEW_TYPE.LOADING_VIEW
+        } else {
+            VIEW_TYPE.MOVIE
+        }
     }
 
-    override fun onBindViewHolder(viewHolder: MovieListAdapter.ViewHolder, position: Int) {
-        val movie: Movie = movieList.get(position)
-        val textView = viewHolder.nameTextView
-        textView.setText(movie.name)
-        setImage(imageView = viewHolder.imageView, posterPath = movie.posterPath)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return getViewForRow(parent = parent, viewType = viewType)
+    }
+
+    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+        if (viewHolder.itemViewType == VIEW_TYPE.MOVIE) {
+            val movie: Movie = movieList.get(position)
+            populateMovieView(movie = movie, viewHolder = viewHolder)
+        }
     }
 
     override fun getItemCount(): Int {
         return movieList.size
     }
 
-//
-//    fun addLoadingView() {
-//        //Add loading item
-//        recyclerView.post {
-//            movieList.add(null)
-//            notifyItemInserted(itemsCells.size - 1)
-//        }
-//    }
-//
-//    fun removeLoadingView() {
-//        //Remove loading item
-//        if (itemsCells.size != 0) {
-//            itemsCells.removeAt(itemsCells.size - 1)
-//            notifyItemRemoved(itemsCells.size)
-//        }
-//    }
+    fun addLoadingView() {
+        recyclerView.post {
+            val fakeMovie = Movie(id = -1, posterPath = "", name = "")
+            movieList.add(fakeMovie)
+            notifyDataSetChanged()
+        }
+    }
+
+    fun removeLoadingView() {
+        recyclerView.post {
+            movieList.removeAll { movie ->
+                movie.id == -1
+            }
+            notifyDataSetChanged()
+        }
+    }
+
+    // MARK: - Private Methods
+
+    private fun populateMovieView(movie: Movie, viewHolder: RecyclerView.ViewHolder) {
+        val movieViewHolder = viewHolder as MovieViewHolder
+        val textView = movieViewHolder.nameTextView
+        textView.setText(movie.name)
+        setImage(imageView = viewHolder.imageView, posterPath = movie.posterPath)
+    }
+
+    private fun getViewForRow(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflateView = getInflateView(parent = parent, viewType = viewType)
+        return when (viewType) {
+            VIEW_TYPE.MOVIE -> MovieViewHolder(inflateView)
+            VIEW_TYPE.LOADING_VIEW -> LoadingViewHolder(inflateView)
+            else -> MovieViewHolder(inflateView)
+        }
+    }
+
+    private fun getInflateView(parent: ViewGroup, viewType: Int): View {
+        val viewId = when(viewType) {
+            VIEW_TYPE.MOVIE ->
+                R.layout.movie_recycler_item
+            VIEW_TYPE.LOADING_VIEW ->
+                R.layout.scroll_loading
+            else -> R.layout.movie_recycler_item
+        }
+
+        return LayoutInflater.from(parent.context).inflate(viewId, parent, false)
+    }
 
     private fun setImage(imageView: ImageView, posterPath: String) {
         if (posterPath == null) return
@@ -93,4 +131,9 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
     fun updateMovieList(movieList: ArrayList<Movie>) {
         this.movieList = movieList
     }
+}
+
+object VIEW_TYPE {
+    const val MOVIE = 0
+    const val LOADING_VIEW = 1
 }
