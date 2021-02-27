@@ -61,7 +61,7 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
         recyclerView.post {
             val fakeMovie = Movie(id = -1, posterPath = "", name = "")
             movieList.add(fakeMovie)
-            notifyDataSetChanged()
+            notifyItemInserted(movieList.size - 1)
         }
     }
 
@@ -70,7 +70,7 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
             movieList.removeAll { movie ->
                 movie.id == -1
             }
-            notifyDataSetChanged()
+            notifyItemRemoved(movieList.size - 1)
         }
     }
 
