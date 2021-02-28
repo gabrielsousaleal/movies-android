@@ -1,7 +1,8 @@
-package com.example.movies.MovieList.Activities
+package com.example.movies.Feature.MovieList.Activities
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.Button
@@ -10,12 +11,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies.Commons.Models.Movie
-import com.example.movies.MovieList.Adapter.MovieListAdapter
-import com.example.movies.MovieList.Adapter.MovieListScrollListener
-import com.example.movies.MovieList.Adapter.MoviesRecyclerListener
-import com.example.movies.MovieList.Adapter.VIEW_TYPE
-import com.example.movies.MovieList.ViewModel.MOVIE_TYPE
-import com.example.movies.MovieList.ViewModel.MovieListViewModel
+import com.example.movies.Feature.MovieList.Adapter.MovieListAdapter
+import com.example.movies.Feature.MovieList.Adapter.MovieListScrollListener
+import com.example.movies.Feature.MovieList.Adapter.MoviesRecyclerListener
+import com.example.movies.Feature.MovieList.Adapter.VIEW_TYPE
+import com.example.movies.Feature.MovieList.ViewModel.MOVIE_TYPE
+import com.example.movies.Feature.MovieList.ViewModel.MovieListViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_movie_list.*
 
@@ -165,7 +166,7 @@ class MovieList : AppCompatActivity(), MovieListActivityInterface {
         viewModel.getDetaliedMovie(movieID = movieID) {response, errorMessage ->
             stopFullScreenLoading()
             if (response != null) {
-                // PUSH NEXT PAGE
+                Log.i("filme", response.movieName!!)
             }
 
             if (errorMessage != null) {

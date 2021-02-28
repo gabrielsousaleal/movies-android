@@ -1,4 +1,4 @@
-package com.example.movies.MovieList.ViewModel
+package com.example.movies.Commons.ViewModel
 
 import android.content.Context
 import android.widget.ImageView
@@ -6,16 +6,20 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.movies.Commons.Models.Movie
-import com.example.movies.MovieList.Activities.MovieListActivityInterface
 import com.example.movies.R
 import com.example.movies.Services.Services
 import com.example.movies.Services.ServicesInterface
+
+enum class IMAGE_SIZE(val string: String) {
+    MEDIUM("w300/"),
+    HIGHT("w500/")
+}
 
 class MovieViewModel(val activityContext: Context, var movie: Movie, val service: ServicesInterface = Services()) {
 
     //MARK: - Constants
 
-    private val IMAGE_BASE_PATH = "http://image.tmdb.org/t/p/w300"
+    private val IMAGE_BASE_PATH = "http://image.tmdb.org/t/p/"
 
     // MARK:- Public Methods
 
@@ -26,10 +30,11 @@ class MovieViewModel(val activityContext: Context, var movie: Movie, val service
         return movie.movieName
     }
 
-    fun fetchImageIntoImageView(imageView: ImageView) {
+    fun fetchImageIntoImageView(imageSize: IMAGE_SIZE, imageView: ImageView) {
         if (movie.posterPath == null) return
 
-        val fullURL = IMAGE_BASE_PATH.plus(movie.posterPath)
+        val urlWithSize = IMAGE_BASE_PATH.plus(imageSize.string)
+        val fullURL = urlWithSize.plus(movie.posterPath)
 
         Glide.with(imageView.context)
                 .load(fullURL)

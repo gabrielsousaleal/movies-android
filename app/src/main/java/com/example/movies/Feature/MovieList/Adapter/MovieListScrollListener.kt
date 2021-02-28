@@ -1,4 +1,4 @@
-package com.example.movies.MovieList.Adapter
+package com.example.movies.Feature.MovieList.Adapter
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView

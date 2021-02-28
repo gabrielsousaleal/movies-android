@@ -1,4 +1,4 @@
-package com.example.movies.MovieList.Adapter
+package com.example.movies.Feature.MovieList.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.Commons.Models.Movie
-import com.example.movies.MovieList.Activities.MovieListActivityInterface
-import com.example.movies.MovieList.ViewModel.MovieViewModel
+import com.example.movies.Commons.ViewModel.IMAGE_SIZE
+import com.example.movies.Feature.MovieList.Activities.MovieListActivityInterface
+import com.example.movies.Commons.ViewModel.MovieViewModel
 import com.example.movies.R
 
 interface MoviesRecyclerListener {
@@ -92,7 +92,7 @@ class MovieListAdapter(val activityInterface: MovieListActivityInterface, privat
 
         movieView.nameTextView.text = viewModel.getName()
         recyclerView.post {
-           viewModel.fetchImageIntoImageView(imageView = movieView.imageView)
+           viewModel.fetchImageIntoImageView(imageView = movieView.imageView, imageSize = IMAGE_SIZE.MEDIUM)
         }
     }
 

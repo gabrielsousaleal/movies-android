@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.movies">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -10,8 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Movies"
-        android:usesCleartextTraffic= "true">
-        <activity android:name=".MovieList.Activities.MovieList">
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Feature.DetailedMovie.Activities.DetailedMovie"></activity>
+        <activity android:name=".Feature.DetailedMovie.Activities.DetailedMovieActivity" />
+        <activity android:name=".Feature.MovieList.Activities.MovieList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
