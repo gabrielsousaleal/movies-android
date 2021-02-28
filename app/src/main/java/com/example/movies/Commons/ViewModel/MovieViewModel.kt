@@ -9,6 +9,7 @@ import com.example.movies.Commons.Models.Movie
 import com.example.movies.R
 import com.example.movies.Services.Services
 import com.example.movies.Services.ServicesInterface
+import java.io.Serializable
 
 enum class IMAGE_SIZE(val string: String) {
     MEDIUM("w300/"),

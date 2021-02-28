@@ -1,5 +1,6 @@
 package com.example.movies.Feature.MovieList.Activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -11,6 +12,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies.Commons.Models.Movie
+import com.example.movies.Commons.ViewModel.MovieViewModel
+import com.example.movies.Feature.DetailedMovie.Activities.DetailedMovie
 import com.example.movies.Feature.MovieList.Adapter.MovieListAdapter
 import com.example.movies.Feature.MovieList.Adapter.MovieListScrollListener
 import com.example.movies.Feature.MovieList.Adapter.MoviesRecyclerListener
@@ -19,6 +22,7 @@ import com.example.movies.Feature.MovieList.ViewModel.MOVIE_TYPE
 import com.example.movies.Feature.MovieList.ViewModel.MovieListViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_movie_list.*
+import java.io.Serializable
 
 interface MovieListActivityInterface {
     fun openMovieDetailed(movieID: Int)
@@ -50,7 +54,7 @@ class MovieList : AppCompatActivity(), MovieListActivityInterface {
 
     private fun configureButton(button: Button, movieType: MOVIE_TYPE) {
         button.setOnClickListener {
-            selectButton(movieButton)
+            selectButton(button)
             viewModel.setSearchType(movieType) {response, errorMessage ->
                 if (response != null) {
                     configureAdapter(response)
@@ -166,7 +170,9 @@ class MovieList : AppCompatActivity(), MovieListActivityInterface {
         viewModel.getDetaliedMovie(movieID = movieID) {response, errorMessage ->
             stopFullScreenLoading()
             if (response != null) {
-                Log.i("filme", response.movieName!!)
+                val detaliedMovieActivity = Intent(this, DetailedMovie::class.java)
+                detaliedMovieActivity.putExtra("movie", response as Serializable)
+                startActivity(detaliedMovieActivity)
             }
 
             if (errorMessage != null) {

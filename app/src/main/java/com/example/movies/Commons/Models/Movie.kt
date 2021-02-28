@@ -1,6 +1,7 @@
 package com.example.movies.Commons.Models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Movie (
     @SerializedName("id")
@@ -20,7 +21,7 @@ data class Movie (
 
     @SerializedName("overview")
     var overView: String? = null
-)
+): Serializable
 
 data class MovieList (
     @SerializedName("results")
