@@ -27,45 +27,45 @@ class MovieListViewModel(private val service: ServicesInterface = Services()) {
 
     // MARK: - Public Methods
 
-    fun setSearchType(type: MOVIE_TYPE, onResult: (error: Boolean, response: ArrayList<Movie>?, errorMessage: String?) -> Unit ) {
+    fun setSearchType(type: MOVIE_TYPE, onResult: (response: ArrayList<Movie>?, errorMessage: String?) -> Unit ) {
         currentMovieType = type
         resetConfigs()
-        getMoviesByName(movieName = currentMovieName) { error, response, errorMessage ->
+        getMoviesByName(movieName = currentMovieName) {response, errorMessage ->
             if (response != null) {
-                onResult(false, response, null)
+                onResult(response, null)
             }
         }
     }
 
-    fun getMoviesByName(movieName: String, page: Int = 1, onResult: (error: Boolean, response: ArrayList<Movie>?, errorMessage: String?) -> Unit) {
-        service.getMoviesByName(name = movieName, page = page, type = currentMovieType.string) { error, response, errorMessage ->
+    fun getMoviesByName(movieName: String, page: Int = 1, onResult: (response: ArrayList<Movie>?, errorMessage: String?) -> Unit) {
+        service.getMoviesByName(name = movieName, page = page, type = currentMovieType.string) {response, errorMessage ->
             if (response != null) {
                 currentPage = page
                 currentMovieName = movieName
                 updateMovieList(newMovieList = response.movies)
-                onResult(false, movieList, null)
+                onResult(movieList, null)
             }
 
-            if (error) {
-                onResult(true, null, errorMessage)
+            if (errorMessage != null) {
+                onResult(null, errorMessage)
             }
         }
     }
 
-    fun getDetaliedMovie(movieID: Int, onResult: (error: Boolean, response: Movie?, errorMessage: String?) -> Unit) {
-        service.getDetaliedMovie(type = currentMovieType.string, movieID = movieID) { error, response, errorMessage ->
+    fun getDetaliedMovie(movieID: Int, onResult: (response: Movie?, errorMessage: String?) -> Unit) {
+        service.getDetaliedMovie(type = currentMovieType.string, movieID = movieID) { response, errorMessage ->
             if (response != null) {
-                onResult(false, response, null)
+                onResult(response, null)
             }
         }
     }
 
-    fun loadNextPage(onResult: (error: Boolean, response: ArrayList<Movie>?, errorMessage: String?) -> Unit) {
+    fun loadNextPage(onResult: (response: ArrayList<Movie>?, errorMessage: String?) -> Unit) {
         currentPage += 1
 
-        getMoviesByName(movieName = currentMovieName, page = currentPage) { error, response, errorMessage ->
+        getMoviesByName(movieName = currentMovieName, page = currentPage) { response, errorMessage ->
             if (response != null) {
-                onResult(false, response, null)
+                onResult(response, null)
             }
         }
     }

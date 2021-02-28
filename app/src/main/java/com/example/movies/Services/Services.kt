@@ -19,34 +19,34 @@ class Services: ServicesInterface {
     override fun getMoviesByName(type: String,
                                  name: String,
                                  page: Int,
-                                 onResult: (error: Boolean, response: MovieList?, errorMessage: String?) -> Unit) {
+                                 onResult: (response: MovieList?, errorMessage: String?) -> Unit) {
        val call = RetrofitInitializer().service().getAllMovies(type = type, movieName = name, page = page, api_key = API_KEY, language = LANGUAGE)
        call.enqueue(object: Callback<MovieList> {
            override fun onResponse(call: Call<MovieList>?,
                                    response: Response<MovieList>?) {
-               onResult(false, response?.body(), null)
+               onResult(response?.body(), null)
            }
 
            override fun onFailure(call: Call<MovieList>?,
                                   t: Throwable?) {
-               onResult(true, null, t?.message)
+               onResult(null, t?.message)
            }
    })
    }
 
     override fun getDetaliedMovie(type: String,
                                   movieID: Int,
-                                  onResult: (error: Boolean, response: Movie?, errorMessage: String?) -> Unit) {
+                                  onResult: (response: Movie?, errorMessage: String?) -> Unit) {
         val call = RetrofitInitializer().service().getDetaliedMovie(type = type, apiKey = API_KEY, movieID = movieID, language = LANGUAGE)
         call.enqueue(object: Callback<Movie> {
             override fun onResponse(call: Call<Movie>?,
                                     response: Response<Movie>?) {
-                onResult(false, response?.body(), null)
+                onResult(response?.body(), null)
             }
 
             override fun onFailure(call: Call<Movie>?,
                                    t: Throwable?) {
-                onResult(true, null, t?.message)
+                onResult(null, t?.message)
             }
         })
     }
