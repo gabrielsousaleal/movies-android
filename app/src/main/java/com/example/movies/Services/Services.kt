@@ -7,8 +7,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class Services: ServicesInterface {
-    override fun getMoviesByName(name: String, page: Int, onResult: (error: Boolean, response: MovieList?, errorMessage: String?) -> Unit) {
-       val call = RetrofitInitializer().service().getAllMovies(movieName = name, page = page)
+    override fun getMoviesByName(type: String, name: String, page: Int, onResult: (error: Boolean, response: MovieList?, errorMessage: String?) -> Unit) {
+       val call = RetrofitInitializer().service().getAllMovies(type = type, movieName = name, page = page)
        call.enqueue(object: Callback<MovieList> {
            override fun onResponse(call: Call<MovieList>?,
                                    response: Response<MovieList>?) {

@@ -1,18 +1,17 @@
 package com.example.movies.MovieList.Adapter
 
 import android.content.Context
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.movies.Commons.Models.Movie
+import com.example.movies.MovieList.ViewModel.MovieViewModel
 import com.example.movies.R
 
 interface MoviesRecyclerListener {
@@ -49,7 +48,7 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         if (viewHolder.itemViewType == VIEW_TYPE.MOVIE) {
             val movie: Movie = movieList.get(position)
-            populateMovieView(movie = movie, viewHolder = viewHolder)
+            populateMovieView(movie = movie, movieView = viewHolder as MovieViewHolder)
         }
     }
 
@@ -59,7 +58,7 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
 
     fun addLoadingView() {
         recyclerView.post {
-            val fakeMovie = Movie(id = -1, posterPath = "", name = "")
+            val fakeMovie = Movie()
             movieList.add(fakeMovie)
             notifyItemInserted(movieList.size - 1)
         }
@@ -76,11 +75,11 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
 
     // MARK: - Private Methods
 
-    private fun populateMovieView(movie: Movie, viewHolder: RecyclerView.ViewHolder) {
-        val movieViewHolder = viewHolder as MovieViewHolder
-        val textView = movieViewHolder.nameTextView
-        textView.setText(movie.name)
-        setImage(imageView = viewHolder.imageView, posterPath = movie.posterPath)
+    private fun populateMovieView(movie: Movie, movieView: MovieViewHolder) {
+        val viewModel = MovieViewModel(movie = movie)
+        val textView = movieView.nameTextView
+        textView.setText(viewModel.getName())
+        setImage(imageView = movieView.imageView, posterPath = movie.posterPath)
     }
 
     private fun getViewForRow(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -104,7 +103,7 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
         return LayoutInflater.from(parent.context).inflate(viewId, parent, false)
     }
 
-    private fun setImage(imageView: ImageView, posterPath: String) {
+    private fun setImage(imageView: ImageView, posterPath: String?) {
         if (posterPath == null) return
 
         val baseURL = "http://image.tmdb.org/t/p/w300"

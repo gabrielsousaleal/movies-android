@@ -16,6 +16,7 @@ import com.example.movies.MovieList.Adapter.MovieListAdapter
 import com.example.movies.MovieList.Adapter.MovieListScrollListener
 import com.example.movies.MovieList.Adapter.MoviesRecyclerListener
 import com.example.movies.MovieList.Adapter.VIEW_TYPE
+import com.example.movies.MovieList.ViewModel.MOVIE_TYPE
 import com.example.movies.MovieList.ViewModel.MovieListViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_movie_list.*
@@ -45,10 +46,20 @@ class MovieList : AppCompatActivity() {
     private fun configureButtons() {
         movieButton.setOnClickListener {
             selectButton(movieButton)
+            viewModel.setSearchType(MOVIE_TYPE.MOVIES) { error, response, errorMessage ->
+                if (response != null) {
+                    configureAdapter(response)
+                }
+            }
         }
 
         seriesButton.setOnClickListener {
             selectButton(seriesButton)
+            viewModel.setSearchType(MOVIE_TYPE.SERIES) { error, response, errorMessage ->
+                if (response != null) {
+                    configureAdapter(response)
+                }
+            }
         }
     }
 
@@ -63,6 +74,7 @@ class MovieList : AppCompatActivity() {
     }
 
     private fun setDefaultAdapter() {
+        selectButton(button = movieButton)
         viewModel.getMoviesByName(movieName = "naruto") { error, response, errorMessage ->
             if (response != null) {
                 configureAdapter(movieList = response)
@@ -89,7 +101,7 @@ class MovieList : AppCompatActivity() {
         scrollListener.setRecyclerListener(object : MoviesRecyclerListener {
             override fun pushNextPage() {
                 adapter.addLoadingView()
-                Handler().postDelayed( {
+                Handler().post {
                     viewModel.loadNextPage { error, response, errorMessage ->
                         adapter.removeLoadingView()
                         if (response != null) {
@@ -97,7 +109,7 @@ class MovieList : AppCompatActivity() {
                             scrollListener.stopLoading()
                         }
                     }
-                }, 2000)
+                }
             }
         })
 
