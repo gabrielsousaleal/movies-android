@@ -1,7 +1,5 @@
 package com.example.movies.Services.Retrofit
 
-import android.media.Image
-import com.example.movies.Commons.Models.Movie
 import com.example.movies.Commons.Models.MovieList
 import retrofit2.Call
 import retrofit2.http.GET

@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.movies.Commons.Models.Movie
 import com.example.movies.MovieList.ViewModel.MovieViewModel
 import com.example.movies.R
@@ -20,20 +17,24 @@ interface MoviesRecyclerListener {
 
 class MovieListAdapter(private var movieList: ArrayList<Movie>, private val activityContext: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    // MARK: - ViewHolders
+
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     inner class MovieViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
-        val nameTextView = itemView.findViewById<TextView>(R.id.movieName)
-        val imageView = itemView.findViewById<ImageView>(R.id.movieImageView)
+        val nameTextView: TextView = itemView.findViewById(R.id.movieName)
+        val imageView: ImageView = itemView.findViewById(R.id.movieImageView)
     }
 
+    // MARK: - Overrides
+
     override fun getItemId(position: Int): Long {
-        val movie: Movie = movieList.get(position)
-        return movie.id as Long
+        val movie = movieList[position]
+        return movie.id.toLong()
     }
 
     override fun getItemViewType(position: Int): Int {
-        val movie = movieList.get(position)
+        val movie = movieList[position]
         return if (movie.id == -1) {
             VIEW_TYPE.LOADING_VIEW
         } else {
@@ -47,7 +48,7 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         if (viewHolder.itemViewType == VIEW_TYPE.MOVIE) {
-            val movie: Movie = movieList.get(position)
+            val movie: Movie = movieList[position]
             populateMovieView(movie = movie, movieView = viewHolder as MovieViewHolder)
         }
     }
@@ -55,6 +56,8 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
     override fun getItemCount(): Int {
         return movieList.size
     }
+
+    // MARK: - Public Methods
 
     fun addLoadingView() {
         recyclerView.post {
@@ -73,13 +76,17 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
         }
     }
 
+    fun updateMovieList(movieList: ArrayList<Movie>) {
+        this.movieList = movieList
+    }
+
     // MARK: - Private Methods
 
     private fun populateMovieView(movie: Movie, movieView: MovieViewHolder) {
         val viewModel = MovieViewModel(movie = movie, activityContext = activityContext)
 
-        movieView.nameTextView.setText(viewModel.getName())
-        recyclerView.post() {
+        movieView.nameTextView.text = viewModel.getName()
+        recyclerView.post {
            viewModel.fetchImageIntoImageView(imageView = movieView.imageView)
         }
     }
@@ -103,10 +110,6 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
         }
 
         return LayoutInflater.from(parent.context).inflate(viewId, parent, false)
-    }
-
-    fun updateMovieList(movieList: ArrayList<Movie>) {
-        this.movieList = movieList
     }
 }
 

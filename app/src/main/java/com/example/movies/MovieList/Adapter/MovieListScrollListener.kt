@@ -1,10 +1,9 @@
 package com.example.movies.MovieList.Adapter
 
-import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MovieListScrollListener(private val context: Context, private var gridLayoutManager: GridLayoutManager) : RecyclerView.OnScrollListener() {
+class MovieListScrollListener(private var gridLayoutManager: GridLayoutManager) : RecyclerView.OnScrollListener() {
 
     // MARK: - Private Properties
 

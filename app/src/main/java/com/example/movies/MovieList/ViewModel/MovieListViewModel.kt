@@ -1,7 +1,6 @@
 package com.example.movies.MovieList.ViewModel
 
 import com.example.movies.Commons.Models.Movie
-import com.example.movies.Commons.Models.MovieList
 import com.example.movies.Services.Services
 import com.example.movies.Services.ServicesInterface
 
@@ -64,7 +63,7 @@ class MovieListViewModel(private val service: ServicesInterface = Services()) {
 
     // MARK: - Private Methods
 
-    fun resetConfigs() {
+    private fun resetConfigs() {
         currentPage = 1
         movieList.removeAll(movieList)
     }

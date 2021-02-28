@@ -1,15 +1,10 @@
 package com.example.movies.MovieList.Activities
 
-import android.annotation.SuppressLint
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.widget.Button
 import android.widget.SearchView
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies.Commons.Models.Movie
 import com.example.movies.MovieList.Adapter.MovieListAdapter
@@ -20,10 +15,7 @@ import com.example.movies.MovieList.ViewModel.MOVIE_TYPE
 import com.example.movies.MovieList.ViewModel.MovieListViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_movie_list.*
-import okhttp3.internal.wait
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.schedule
 
 class MovieList : AppCompatActivity() {
 
@@ -97,7 +89,7 @@ class MovieList : AppCompatActivity() {
             }
         }
 
-        val scrollListener = MovieListScrollListener(context = baseContext ,gridLayoutManager = recyclerView.layoutManager as GridLayoutManager)
+        val scrollListener = MovieListScrollListener(gridLayoutManager = recyclerView.layoutManager as GridLayoutManager)
         scrollListener.setRecyclerListener(object : MoviesRecyclerListener {
             override fun pushNextPage() {
                 adapter.addLoadingView()
