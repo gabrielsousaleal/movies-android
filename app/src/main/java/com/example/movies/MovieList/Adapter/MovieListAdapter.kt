@@ -76,10 +76,12 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
     // MARK: - Private Methods
 
     private fun populateMovieView(movie: Movie, movieView: MovieViewHolder) {
-        val viewModel = MovieViewModel(movie = movie)
-        val textView = movieView.nameTextView
-        textView.setText(viewModel.getName())
-        setImage(imageView = movieView.imageView, posterPath = movie.posterPath)
+        val viewModel = MovieViewModel(movie = movie, activityContext = activityContext)
+
+        movieView.nameTextView.setText(viewModel.getName())
+        recyclerView.post() {
+           viewModel.fetchImageIntoImageView(imageView = movieView.imageView)
+        }
     }
 
     private fun getViewForRow(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -101,30 +103,6 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
         }
 
         return LayoutInflater.from(parent.context).inflate(viewId, parent, false)
-    }
-
-    private fun setImage(imageView: ImageView, posterPath: String?) {
-        if (posterPath == null) return
-
-        val baseURL = "http://image.tmdb.org/t/p/w300"
-        val fullURL = baseURL.plus(posterPath)
-
-        val circularProgressDrawable = CircularProgressDrawable(activityContext)
-        circularProgressDrawable.strokeWidth = 15f
-        circularProgressDrawable.centerRadius = 50f
-        circularProgressDrawable.setColorSchemeColors(activityContext.resources.getColor(R.color.white))
-        circularProgressDrawable.start()
-
-        recyclerView.post {
-            Glide.with(imageView.context)
-                    .load(fullURL)
-                    .apply(
-                            RequestOptions()
-                                    .placeholder(circularProgressDrawable)
-                                    .fitCenter()
-                    )
-                    .into(imageView)
-        }
     }
 
     fun updateMovieList(movieList: ArrayList<Movie>) {

@@ -101,7 +101,7 @@ class MovieList : AppCompatActivity() {
         scrollListener.setRecyclerListener(object : MoviesRecyclerListener {
             override fun pushNextPage() {
                 adapter.addLoadingView()
-                Handler().post {
+                Handler().postDelayed( {
                     viewModel.loadNextPage { error, response, errorMessage ->
                         adapter.removeLoadingView()
                         if (response != null) {
@@ -109,7 +109,7 @@ class MovieList : AppCompatActivity() {
                             scrollListener.stopLoading()
                         }
                     }
-                }
+                }, 500)
             }
         })
 
