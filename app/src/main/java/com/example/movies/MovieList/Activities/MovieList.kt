@@ -1,9 +1,15 @@
 package com.example.movies.MovieList.Activities
 
+import android.annotation.SuppressLint
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import android.widget.Button
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies.Commons.Models.Movie
 import com.example.movies.MovieList.Adapter.MovieListAdapter
@@ -31,9 +37,30 @@ class MovieList : AppCompatActivity() {
         setContentView(R.layout.activity_movie_list)
         configureSearchView()
         setDefaultAdapter()
+        configureButtons()
     }
 
     // MARK: - Private Methods
+
+    private fun configureButtons() {
+        movieButton.setOnClickListener {
+            selectButton(movieButton)
+        }
+
+        seriesButton.setOnClickListener {
+            selectButton(seriesButton)
+        }
+    }
+
+    private fun selectButton(button: Button) {
+        diselectAllButtons()
+        button.setBackgroundColor(resources.getColor(R.color.purple_700))
+    }
+
+    private fun diselectAllButtons() {
+        seriesButton.setBackgroundColor(resources.getColor(R.color.transparent))
+        movieButton.setBackgroundColor(resources.getColor(R.color.transparent))
+    }
 
     private fun setDefaultAdapter() {
         viewModel.getMoviesByName(movieName = "naruto") { error, response, errorMessage ->
