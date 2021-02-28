@@ -1,10 +1,12 @@
 package com.example.movies.MovieList.Activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import android.view.animation.AlphaAnimation
 import android.widget.Button
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.movies.Commons.Models.Movie
 import com.example.movies.MovieList.Adapter.MovieListAdapter
@@ -15,12 +17,16 @@ import com.example.movies.MovieList.ViewModel.MOVIE_TYPE
 import com.example.movies.MovieList.ViewModel.MovieListViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_movie_list.*
-import kotlin.collections.ArrayList
 
-class MovieList : AppCompatActivity() {
+interface MovieListActivityInterface {
+    fun openMovieDetailed(movieID: Int)
+}
+
+class MovieList : AppCompatActivity(), MovieListActivityInterface {
 
     // MARK: - Private Properties
 
+    private var alphaAnimation: AlphaAnimation? = null
     private val viewModel = MovieListViewModel()
 
     // MARK: - Life Cicle
@@ -75,7 +81,7 @@ class MovieList : AppCompatActivity() {
     }
 
     private fun configureAdapter(movieList: ArrayList<Movie>) {
-        val adapter = MovieListAdapter(movieList, this, recyclerView)
+        val adapter = MovieListAdapter(this, movieList, baseContext, recyclerView)
         recyclerView.adapter = adapter
         val layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = layoutManager
@@ -93,7 +99,7 @@ class MovieList : AppCompatActivity() {
         scrollListener.setRecyclerListener(object : MoviesRecyclerListener {
             override fun pushNextPage() {
                 adapter.addLoadingView()
-                Handler().postDelayed( {
+                Handler().postDelayed({
                     viewModel.loadNextPage { error, response, errorMessage ->
                         adapter.removeLoadingView()
                         if (response != null) {
@@ -113,6 +119,7 @@ class MovieList : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 viewModel.getMoviesByName(movieName = newText) { error, response, errorMessage ->
                     if (response != null) {
@@ -122,5 +129,31 @@ class MovieList : AppCompatActivity() {
                 return false
             }
         })
+    }
+
+    private fun startFullScreenLoading() {
+        alphaAnimation = AlphaAnimation(0f, 3f)
+        alphaAnimation?.duration = 200
+        progressBarHolder.setAnimation(alphaAnimation)
+        progressBarHolder.visibility = View.VISIBLE
+    }
+
+    private fun stopFullScreenLoading() {
+        alphaAnimation = AlphaAnimation(1f, 0f)
+        alphaAnimation?.duration = 200
+        progressBarHolder.setAnimation(alphaAnimation)
+        progressBarHolder.visibility = View.GONE
+    }
+
+    // MARK: - Interface Implementation
+
+    override fun openMovieDetailed(movieID: Int) {
+        startFullScreenLoading()
+        viewModel.getDetaliedMovie(movieID = movieID) { error, response, errorMessage ->
+            stopFullScreenLoading()
+            if (response != null) {
+                // PUSH NEXT PAGE
+            }
+        }
     }
 }

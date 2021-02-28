@@ -16,7 +16,10 @@ data class Movie (
     var movieName: String? = null,
 
     @SerializedName("name")
-    var nameSerie: String? = null
+    var nameSerie: String? = null,
+
+    @SerializedName("overview")
+    var overView: String? = null
 )
 
 data class MovieList (

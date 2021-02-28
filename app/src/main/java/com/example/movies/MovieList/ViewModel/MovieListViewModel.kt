@@ -1,6 +1,7 @@
 package com.example.movies.MovieList.ViewModel
 
 import com.example.movies.Commons.Models.Movie
+import com.example.movies.MovieList.Activities.MovieListActivityInterface
 import com.example.movies.Services.Services
 import com.example.movies.Services.ServicesInterface
 
@@ -47,6 +48,14 @@ class MovieListViewModel(private val service: ServicesInterface = Services()) {
 
             if (error) {
                 onResult(true, null, errorMessage)
+            }
+        }
+    }
+
+    fun getDetaliedMovie(movieID: Int, onResult: (error: Boolean, response: Movie?, errorMessage: String?) -> Unit) {
+        service.getDetaliedMovie(type = currentMovieType.string, movieID = movieID) { error, response, errorMessage ->
+            if (response != null) {
+                onResult(false, response, null)
             }
         }
     }

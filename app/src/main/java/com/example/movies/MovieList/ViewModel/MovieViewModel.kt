@@ -6,11 +6,12 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.movies.Commons.Models.Movie
+import com.example.movies.MovieList.Activities.MovieListActivityInterface
 import com.example.movies.R
 import com.example.movies.Services.Services
 import com.example.movies.Services.ServicesInterface
 
-class MovieViewModel(val activityContext: Context, val movie: Movie, val service: ServicesInterface = Services()) {
+class MovieViewModel(val activityContext: Context, var movie: Movie, val service: ServicesInterface = Services()) {
 
     //MARK: - Constants
 

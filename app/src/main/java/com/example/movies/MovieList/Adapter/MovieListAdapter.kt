@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.Commons.Models.Movie
+import com.example.movies.MovieList.Activities.MovieListActivityInterface
 import com.example.movies.MovieList.ViewModel.MovieViewModel
 import com.example.movies.R
 
@@ -15,7 +17,7 @@ interface MoviesRecyclerListener {
     fun pushNextPage()
 }
 
-class MovieListAdapter(private var movieList: ArrayList<Movie>, private val activityContext: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MovieListAdapter(val activityInterface: MovieListActivityInterface, private var movieList: ArrayList<Movie>, private val activityContext: Context, private val recyclerView: RecyclerView) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // MARK: - ViewHolders
 
@@ -49,6 +51,9 @@ class MovieListAdapter(private var movieList: ArrayList<Movie>, private val acti
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         if (viewHolder.itemViewType == VIEW_TYPE.MOVIE) {
             val movie: Movie = movieList[position]
+            viewHolder.itemView.setOnClickListener {
+                activityInterface.openMovieDetailed(movie.id)
+            }
             populateMovieView(movie = movie, movieView = viewHolder as MovieViewHolder)
         }
     }
