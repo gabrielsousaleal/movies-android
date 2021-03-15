@@ -1,4 +1,4 @@
-package com.example.movies.Feature.MovieList.Adapter
+package com.example.movies.feature.movie_list.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movies.Commons.Models.Movie
-import com.example.movies.Commons.ViewModel.IMAGE_SIZE
-import com.example.movies.Feature.MovieList.Activities.MovieListActivityInterface
-import com.example.movies.Commons.ViewModel.MovieViewModel
+import com.example.movies.commons.model.Movie
+import com.example.movies.commons.view_model.IMAGE_SIZE
+import com.example.movies.feature.movie_list.activity.MovieListActivityInterface
+import com.example.movies.commons.view_model.MovieViewModel
 import com.example.movies.R
 
 interface MoviesRecyclerListener {

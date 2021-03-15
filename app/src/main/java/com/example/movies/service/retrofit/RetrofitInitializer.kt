@@ -1,4 +1,4 @@
-package com.example.movies.Services.Retrofit
+package com.example.movies.service.retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

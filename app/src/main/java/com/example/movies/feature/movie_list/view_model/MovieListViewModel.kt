@@ -1,8 +1,8 @@
-package com.example.movies.Feature.MovieList.ViewModel
+package com.example.movies.feature.movie_list.view_model
 
-import com.example.movies.Commons.Models.Movie
-import com.example.movies.Services.Services
-import com.example.movies.Services.ServicesInterface
+import com.example.movies.commons.model.Movie
+import com.example.movies.service.Services
+import com.example.movies.service.ServicesInterface
 
 enum class MOVIE_TYPE(val string: String) {
     MOVIES("movie"),

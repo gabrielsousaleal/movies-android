@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#312E2E"
-    tools:context=".Feature.MovieList.Activities.MovieList">
+    tools:context=".feature.movie_list.activity.MovieList">
 
     <SearchView
         android:id="@+id/searchView"

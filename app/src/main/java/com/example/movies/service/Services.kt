@@ -1,8 +1,8 @@
-package com.example.movies.Services
+package com.example.movies.service
 
-import com.example.movies.Commons.Models.Movie
-import com.example.movies.Commons.Models.MovieList
-import com.example.movies.Services.Retrofit.RetrofitInitializer
+import com.example.movies.commons.model.Movie
+import com.example.movies.commons.model.MovieList
+import com.example.movies.service.retrofit.RetrofitInitializer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

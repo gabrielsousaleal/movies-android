@@ -12,9 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Movies"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Feature.DetailedMovie.Activities.DetailedMovie"></activity>
-        <activity android:name=".Feature.DetailedMovie.Activities.DetailedMovieActivity" />
-        <activity android:name=".Feature.MovieList.Activities.MovieList">
+        <activity android:name=".feature.detailed_movie.activity.DetailedMovie"></activity>
+        <activity android:name=".feature.detailed_movie.activity.DetailedMovieActivity" />
+        <activity android:name=".feature.movie_list.activity.MovieList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

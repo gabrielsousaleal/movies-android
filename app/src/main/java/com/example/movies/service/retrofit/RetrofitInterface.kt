@@ -1,7 +1,7 @@
-package com.example.movies.Services.Retrofit
+package com.example.movies.service.retrofit
 
-import com.example.movies.Commons.Models.Movie
-import com.example.movies.Commons.Models.MovieList
+import com.example.movies.commons.model.Movie
+import com.example.movies.commons.model.MovieList
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

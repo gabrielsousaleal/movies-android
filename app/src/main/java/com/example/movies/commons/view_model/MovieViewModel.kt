@@ -1,15 +1,14 @@
-package com.example.movies.Commons.ViewModel
+package com.example.movies.commons.view_model
 
 import android.content.Context
 import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.movies.Commons.Models.Movie
+import com.example.movies.commons.model.Movie
 import com.example.movies.R
-import com.example.movies.Services.Services
-import com.example.movies.Services.ServicesInterface
-import java.io.Serializable
+import com.example.movies.service.Services
+import com.example.movies.service.ServicesInterface
 
 enum class IMAGE_SIZE(val string: String) {
     MEDIUM("w300/"),

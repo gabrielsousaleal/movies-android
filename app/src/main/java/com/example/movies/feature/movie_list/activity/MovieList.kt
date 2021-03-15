@@ -1,9 +1,8 @@
-package com.example.movies.Feature.MovieList.Activities
+package com.example.movies.feature.movie_list.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.widget.Button
@@ -11,15 +10,14 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.movies.Commons.Models.Movie
-import com.example.movies.Commons.ViewModel.MovieViewModel
-import com.example.movies.Feature.DetailedMovie.Activities.DetailedMovie
-import com.example.movies.Feature.MovieList.Adapter.MovieListAdapter
-import com.example.movies.Feature.MovieList.Adapter.MovieListScrollListener
-import com.example.movies.Feature.MovieList.Adapter.MoviesRecyclerListener
-import com.example.movies.Feature.MovieList.Adapter.VIEW_TYPE
-import com.example.movies.Feature.MovieList.ViewModel.MOVIE_TYPE
-import com.example.movies.Feature.MovieList.ViewModel.MovieListViewModel
+import com.example.movies.commons.model.Movie
+import com.example.movies.feature.detailed_movie.activity.DetailedMovie
+import com.example.movies.feature.movie_list.adapter.MovieListAdapter
+import com.example.movies.feature.movie_list.adapter.MovieListScrollListener
+import com.example.movies.feature.movie_list.adapter.MoviesRecyclerListener
+import com.example.movies.feature.movie_list.adapter.VIEW_TYPE
+import com.example.movies.feature.movie_list.view_model.MOVIE_TYPE
+import com.example.movies.feature.movie_list.view_model.MovieListViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_movie_list.*
 import java.io.Serializable

@@ -1,10 +1,10 @@
-package com.example.movies.Feature.DetailedMovie.Activities
+package com.example.movies.feature.detailed_movie.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.movies.Commons.Models.Movie
-import com.example.movies.Commons.ViewModel.IMAGE_SIZE
-import com.example.movies.Commons.ViewModel.MovieViewModel
+import com.example.movies.commons.model.Movie
+import com.example.movies.commons.view_model.IMAGE_SIZE
+import com.example.movies.commons.view_model.MovieViewModel
 import com.example.movies.R
 import kotlinx.android.synthetic.main.activity_detailed_movie.*
 
